@@ -16,3 +16,7 @@ typedef struct {
 void setDestination(Radio*, char*);
 
 
+
+void init_Radio(int fd, int speed);
+
+
