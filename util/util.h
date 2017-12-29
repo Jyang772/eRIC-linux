@@ -1,11 +1,18 @@
-#include "readLine.h"
+//#include "readLine.h"
+#include <assert.h>
 
 //Radio Struct
 typedef struct {
+
+	char* destAddr;
 	//String operations
-	void sendMsg(char**);
+	//void sendMsg(char**);
 
 	//Operations
-	void setDestination(char**);
+	void (*setDestination)(struct Radio*, char*);
 } Radio;
+
+
+void setDestination(Radio*, char*);
+
 
