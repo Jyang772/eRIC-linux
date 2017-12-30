@@ -1,13 +1,12 @@
 CC=gcc
-objects = test receive
+CFLAGS=-Wall
 
-all: $(objects)
+test: 
+	+$(MAKE) -C util
+	+$(CC) main.o util/util.o util/interfaces.o -o test
 
-$(objects): %: %.c
-	$(CC) -o $@ $< 
-
-#sudo chown root ericTest
-#sudo chmod u+s ericTest
+main.o: main.c
+	$(CC) -c main.c
 
 clean:
-	rm receive test
+	rm *.o test

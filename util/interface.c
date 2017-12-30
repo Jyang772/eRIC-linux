@@ -1,4 +1,4 @@
-#include <termios.h>
+#include "interface.h"
 
 int set_interface_attribs(int fd, int speed)
 {
