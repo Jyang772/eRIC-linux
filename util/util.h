@@ -7,13 +7,12 @@
 
 
 //Radio Struct
-typedef struct {
+typedef struct Radio{
 
 	char* ID;
 	char* destAddr;
 	//String operations
 	//void sendMsg(char**);
-
 	//Operations
 	void (*setDestination)(struct Radio*, char*);
 } Radio;
