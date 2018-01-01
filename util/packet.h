@@ -47,3 +47,10 @@ typedef struct Packet{
 	/** CRC */
 	char CRC[7];
 } Packet;
+
+
+void CRC_calculate() {
+
+
+
+}
