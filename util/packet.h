@@ -48,9 +48,14 @@ typedef struct Packet{
 	char CRC[7];
 } Packet;
 
+/**
+ * Calculate CRC and attach to end of Packet structure
+ *
+ * @return 8 byte CRC value
+ */
 
-void CRC_calculate() {
+unsigned int CRC_calculate(Packet* data) {
 
-
+	return crc32a(data->payload);	
 
 }
