@@ -63,7 +63,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">packet.h File Reference</div>  </div>
 </div><!--header-->
@@ -85,6 +86,13 @@ Classes</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:a5a0d39cb22016d84746e2c0163fa2c7c"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structPacket.html">Packet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="packet_8h.html#a5a0d39cb22016d84746e2c0163fa2c7c">Packet</a></td></tr>
 <tr class="separator:a5a0d39cb22016d84746e2c0163fa2c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a60ae4576585cee256f222d2dcbef0d29"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="packet_8h.html#a60ae4576585cee256f222d2dcbef0d29">CRC_calculate</a> (<a class="el" href="structPacket.html">Packet</a> *data)</td></tr>
+<tr class="separator:a60ae4576585cee256f222d2dcbef0d29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2b14abaab8447a8bc3065ad7d85f3cf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="packet_8h.html#af2b14abaab8447a8bc3065ad7d85f3cf">CRC_verify</a> (<a class="el" href="structPacket.html">Packet</a> data)</td></tr>
+<tr class="separator:af2b14abaab8447a8bc3065ad7d85f3cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Description of <a class="el" href="structPacket.html">Packet</a> structure. </p>
@@ -104,6 +112,51 @@ Typedefs</h2></td></tr>
 </div><div class="memdoc">
 <p>A <a class="el" href="structPacket.html">Packet</a> structure. New Packets can be created using the packet_new function.</p>
 <dl class="section see"><dt>See also</dt><dd>packet_new </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a60ae4576585cee256f222d2dcbef0d29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60ae4576585cee256f222d2dcbef0d29">&#9670;&nbsp;</a></span>CRC_calculate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int CRC_calculate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structPacket.html">Packet</a> *&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Calculate CRC and attach to end of <a class="el" href="structPacket.html">Packet</a> structure.</p>
+<dl class="section return"><dt>Returns</dt><dd>8 byte CRC value. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="packet_8h_source.html#l00057">57</a> of file <a class="el" href="packet_8h_source.html">packet.h</a>.</p>
+
+</div>
+</div>
+<a id="af2b14abaab8447a8bc3065ad7d85f3cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2b14abaab8447a8bc3065ad7d85f3cf">&#9670;&nbsp;</a></span>CRC_verify()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CRC_verify </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structPacket.html">Packet</a>&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Verify CRC</p>
+<dl class="section return"><dt>Returns</dt><dd>-1 if CRC verification fails. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="packet_8h_source.html#l00067">67</a> of file <a class="el" href="packet_8h_source.html">packet.h</a>.</p>
 
 </div>
 </div>
