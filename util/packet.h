@@ -49,13 +49,25 @@ typedef struct Packet{
 } Packet;
 
 /**
- * Calculate CRC and attach to end of Packet structure
+ * Calculate CRC and attach to end of Packet structure.
  *
- * @return 8 byte CRC value
+ * @return 8 byte CRC value.
  */
 
 unsigned int CRC_calculate(Packet* data) {
-
 	return crc32a(data->payload);	
+}
 
+/**
+ * Verify CRC
+ *
+ * @return -1 if CRC verification fails.
+ */
+
+int CRC_verify(Packet data) {
+
+	if(crc32a(data->CRC) != crc32a(data->payload))
+		return -1;
+	else
+		return 1;
 }
