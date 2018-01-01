@@ -10,6 +10,12 @@ void setDestination(Radio* r, char* s) {
 	return;
 }
 
+void listen(Radio* r, char* s) {
+
+
+
+}
+
 int setup_interface(int* fd, char* portname, int BAUD_RATE) {
 
 	*fd = open(portname, O_RDWR | O_NOCTTY | O_SYNC);
@@ -23,7 +29,6 @@ int setup_interface(int* fd, char* portname, int BAUD_RATE) {
 
 Radio* init_Radio(char* name) {
 
-
 	Radio* new_Radio = (Radio*)malloc(sizeof(Radio));
 
 	new_Radio->ID = strdup(name);
@@ -31,3 +36,8 @@ Radio* init_Radio(char* name) {
 
 	return new_Radio;
 }
+
+int getTemp(Radio* r, char* s) {
+
+}
+

@@ -15,13 +15,15 @@ typedef struct Radio{
 	//void sendMsg(char**);
 	//Operations
 	void (*setDestination)(struct Radio*, char*);
+	void (*getTemp)(struct Radio*, char*);
+	void (*listen)(struct Radio*, char*);
 } Radio;
 
 
 void setDestination(Radio*, char*);
-
+void listen(Radio*, char*);
 Radio* init_Radio(char* name);
-
 int setup_interface(int* fd,char* portname, int BAUD_RATE);
+int getTemp(Radio*, char*);
 
 
