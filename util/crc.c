@@ -3,6 +3,7 @@ Probably only the first three, and maybe the fourth (CRC32d) are of any
 interest. The others are just experiments that did not result in
 anything useful. More comments are at the bottom of this file. */
 
+#include "crc.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -173,6 +174,7 @@ message. This assumes there are no odd bytes at either end.
 is b << 8. I.e., if the byte is the letter 'a', the entry to use is that
 with index 0x6100, not 0x0061. */
 
+/*
 unsigned int crc32d(unsigned char *message) {
    int i, j;
    unsigned int byte, half, crc, mask;
@@ -221,6 +223,7 @@ unsigned int crc32d(unsigned char *message) {
 
    return ~crc;
 }
+*/
 
 // ----------------------------- crc32e --------------------------------
 
@@ -657,6 +660,7 @@ unsigned int crc32h(unsigned char *message) {
 
 // ------------------------------ main ---------------------------------
 
+/*
 int main(int argc, char ** argv) {
 
    if (argc != 2) {
@@ -682,6 +686,7 @@ int main(int argc, char ** argv) {
    printf("crc32a = %08x\n", crc32a(argv[1] + 1));
    return 0;
 }
+*/
 
 /* The code above computes, in several ways, the cyclic redundancy check
 usually referred to as CRC-32. This code is used by IEEE-802 (LAN/MAN

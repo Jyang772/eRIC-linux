@@ -22,7 +22,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  * @brief Description of Packet structure
  *
  */
-
+#include "crc.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -54,9 +54,7 @@ typedef struct Packet{
  * @return 8 byte CRC value.
  */
 
-unsigned int CRC_calculate(Packet* data) {
-	return crc32a(data->payload);	
-}
+unsigned int CRC_calculate(Packet* data);
 
 /**
  * Verify CRC
@@ -64,10 +62,5 @@ unsigned int CRC_calculate(Packet* data) {
  * @return -1 if CRC verification fails.
  */
 
-int CRC_verify(Packet data) {
+int CRC_verify(Packet data);
 
-	if(crc32a(data->CRC) != crc32a(data->payload))
-		return -1;
-	else
-		return 1;
-}

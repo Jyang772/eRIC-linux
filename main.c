@@ -26,10 +26,15 @@ int main() {
 	*/
 
 	Radio* radA = init_Radio(name);
-	setup_interface(&fd, portname, BAUD_RATE);
+	setup_interface(radA, &fd, portname, BAUD_RATE);
 
 	printf("Name: %s\n",radA->ID);
 	radA->setDestination(radA,"B");
 	printf("Destination: %s\n",radA->destAddr);
+
+	//radA->init_connection();
+	//radA->sendCmd("CMD");
+	//radA->getTemp();
+	//radA->close_connection();
 
 }

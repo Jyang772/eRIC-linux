@@ -3,11 +3,11 @@ CFLAGS=-Wall
 
 test: main.o
 	+$(MAKE) -C util
-	$(CC) main.o util/util.o util/interface.o -o test
+	$(CC) main.o util/util.o util/interface.o util/packet.o util/crc.o -o test
 
 main.o: main.c
 	$(CC) -c main.c
 
 clean:
-	+$(MAKE) clean -C util
-	rm *.o test
+	$(MAKE) clean -C util
+	rm -f *.o test
