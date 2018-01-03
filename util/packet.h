@@ -26,6 +26,8 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <stdio.h>
 #include <stdlib.h>
 
+#define INVITE "0000"
+
 /**
  * A Packet structure. New Packets can be created using the packet_new function.
  *
@@ -35,11 +37,13 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 typedef struct Packet{
 
 	/**  Type of transmission */
-	char type;
+	char type[5];
 	/** Source address */
 	char srcAddr[6];
+	//char* srcAddr;
 	/** Destination address */
 	char destAddr[6];
+	//char* destAddr;
 	/** Sequence number used for determining flow of transmission */
 	int seqNum;
 	/** Payload */
@@ -63,4 +67,17 @@ unsigned int CRC_calculate(Packet* data);
  */
 
 int CRC_verify(Packet data);
+
+/**
+ * Serializes a Packet for sending/receiving.
+ */
+
+void serialize_Packet(Packet* data);
+
+/**
+ * Cleans and destroys packet. Call when a packet has been sent or received.
+ *
+ */
+
+void free_packet(Packet* data);
 

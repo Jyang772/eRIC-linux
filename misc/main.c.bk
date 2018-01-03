@@ -1,0 +1,92 @@
+#include "util/util.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <termios.h>
+
+void write_data(Packet* data )
+{
+   int fd = 0;
+   /* open the file in append mode */
+   fd = open( "data.dat", O_RDWR|O_CREAT|O_APPEND,S_IWUSR |S_IRUSR);
+   
+   /* write the binary structure right to the file */
+   write(fd, data->type, strlen(data->type));
+   write(fd, data->srcAddr, strlen(data->srcAddr));
+   write(fd, data->destAddr, strlen(data->destAddr));
+   write(fd, data->seqNum, sizeof(data->seqNum));
+   write(fd, data->payload, sizeof(data->payload));
+   write(fd, data->CRC, sizeof(data->CRC));
+   //write(fd,data,sizeof(Packet));
+   close(fd);
+}
+
+
+void read_data()
+{
+   int fd = 0;
+   //Packet *data = malloc(sizeof(Packet));
+   Packet data;
+   data.type = malloc(25);
+
+   /* open the file */
+   fd = open( "data.dat", O_RDONLY );
+
+   read(fd, data.type, 4);
+   printf("Name %s\n",data.type);
+
+   /* close file */
+   close(fd);
+}
+
+int main() {
+
+
+	//Determine which /dev/ file is the device on
+	char* name = "A";
+	char* portname = "/dev/ttyUSB0";
+	int fd = 0;
+	int wlen = 0;
+	int BAUD_RATE = B19200;
+
+	//Define and Initiate Radio Structs
+	/*
+	Radio radA = {
+		.ID = "A",
+		.setDestination = setDestination
+	};
+	*/
+
+	Radio* radA = init_Radio(name);
+	setup_interface(radA, &fd, portname, BAUD_RATE);
+
+	printf("Name: %s\n",radA->ID);
+	radA->setDestination(radA,"B");
+	printf("Destination: %s\n",radA->destAddr);
+
+	//radA->init_connection();
+	//radA->sendCmd("CMD");
+	//radA->getTemp();
+	//radA->close_connection();
+	
+	Packet data = {
+		.type = strdup("0000"),
+		.srcAddr = strdup(radA->ID),
+		.destAddr = strdup(radA->destAddr),
+	};
+
+	/*
+	if(strcmp(data.type,"0000") == 0)
+		printf("Type 1\n");
+
+	printf("Size of packet: %d\n",sizeof(data));
+
+	printf("%s\n",data.srcAddr);
+	free_packet(&data);
+	printf("%s\n",data.srcAddr);
+	*/
+	
+	write_data(&data);
+	read_data();
+
+}

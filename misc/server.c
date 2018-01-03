@@ -1,6 +1,7 @@
-#include "util/util.h"
+#include "../util/util.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <termios.h>
 
 
 
@@ -15,7 +16,7 @@ int main() {
 
 	//Initiate Radio in server mode
 	Radio* radB = init_Radio(name);
-	setup_interface(%fd, portname, BAUD_RATE);
+	setup_interface(radB, &fd, portname, BAUD_RATE);
 
-	radB.listen();
+	radB->listen(radB);
 }

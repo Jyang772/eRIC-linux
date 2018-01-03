@@ -12,3 +12,9 @@ int CRC_verify(Packet data) {
 		return 1;
 }
 
+
+void free_packet(Packet* data) {
+
+	free(data->srcAddr);
+	free(data->destAddr);
+}

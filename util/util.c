@@ -13,9 +13,21 @@ void setDestination(Radio* r, char* s) {
 int init_connection(Radio* r) {
 	//Send connection request
 	//Construct Connection request packet
-	Packet data = { 
+
+	printf("init_connection\n");	
 	
+	Packet data;
+	strncpy(data.type,"0000",5); //include null term
+	strncpy(data.srcAddr,r->ID, 6);
+	strncpy(data.destAddr,r->destAddr,6);
+
+	/*
+	Packet data = { 
+		.type = strdup("0000"),
+		.srcAddr = strdup(r->ID),
+		.destAddr = strdup(r->destAddr),
 	};
+	*/
 	
 	if(send(r, data) > 0)
 		return 1;
@@ -24,28 +36,37 @@ int init_connection(Radio* r) {
 }
 
 int send(Radio* r, Packet data) {
+	printf("Send\n");
 
 	int wlen;
 	int fd;
 	fd = r->fd;
 
-	wlen = write(fd, &data, sizeof(data));
-	if(wlen != sizeof(data)) {
+	wlen = write(fd, &data, sizeof(Packet));
+	if(wlen != sizeof(Packet)) {
 		printf("Error from write: %d, %d\n", wlen, errno);
 	}
 }
 
-void listen(Radio* r, char* s) {
-/*
+void listen(Radio* r) {
+
 	while(1) {
-		unsigned char buf[80];
 		int rdlen;
+		Packet data;
+		rdlen = read(r->fd, &data, sizeof(Packet));
+		tcdrain(r->fd);
 		
-		rdlen = readLine(fd, buf, sizeof(buf));
-		printf("Command read: %s\n",buf);
+		if(rdlen > 0) {
+			if(strcmp(data.type,INVITE) == 0) {
+				printf("INVITE!\n");
+				Packet reply;
+				strcpy(reply.type,"0010");
+				write(r->fd, &reply, sizeof(Packet));
+			}	
+		}
 
 	}
-	*/
+	
 
 }
 
@@ -69,6 +90,9 @@ Radio* init_Radio(char* name) {
 
 	new_Radio->ID = strdup(name);
 	new_Radio->setDestination = setDestination;
+	new_Radio->init_connection = init_connection;
+	new_Radio->listen = listen;
+
 
 	return new_Radio;
 }

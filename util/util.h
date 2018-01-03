@@ -19,7 +19,7 @@ typedef struct Radio{
 	//Operations
 	void (*setDestination)(struct Radio*, char*);
 	void (*getTemp)(struct Radio*, char*);
-	void (*listen)(struct Radio*, char*);
+	void (*listen)(struct Radio*);
 	int (*init_connection)();
 
 	//Send/Receive
@@ -29,8 +29,16 @@ typedef struct Radio{
 
 
 void setDestination(Radio*, char*);
-int init_connection();
-void listen(Radio*, char*);
+
+/**
+ * Initiates connection between two Radio nodes.
+ *
+ * @return Positive value if connection is established. Negative value if connection fails.
+ */
+
+int init_connection(Radio*);
+int send(Radio*, Packet);
+void listen(Radio*);
 Radio* init_Radio(char* name);
 int setup_interface(Radio* r, int* fd,char* portname, int BAUD_RATE);
 int getTemp(Radio*, char*);
