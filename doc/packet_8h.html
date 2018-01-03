@@ -63,6 +63,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -72,7 +73,8 @@ $(function() {
 
 <p>Description of <a class="el" href="structPacket.html">Packet</a> structure.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
+<div class="textblock"><code>#include &quot;crc.h&quot;</code><br />
+<code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
 </div>
 <p><a href="packet_8h_source.html">Go to the source code of this file.</a></p>
@@ -81,6 +83,12 @@ $(function() {
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structPacket.html">Packet</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a80f1f808fd4b9e7c1a97e8e04741fc88"><td class="memItemLeft" align="right" valign="top"><a id="a80f1f808fd4b9e7c1a97e8e04741fc88"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>INVITE</b>&#160;&#160;&#160;&quot;0000&quot;</td></tr>
+<tr class="separator:a80f1f808fd4b9e7c1a97e8e04741fc88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -93,6 +101,10 @@ Functions</h2></td></tr>
 <tr class="separator:a60ae4576585cee256f222d2dcbef0d29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2b14abaab8447a8bc3065ad7d85f3cf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="packet_8h.html#af2b14abaab8447a8bc3065ad7d85f3cf">CRC_verify</a> (<a class="el" href="structPacket.html">Packet</a> data)</td></tr>
 <tr class="separator:af2b14abaab8447a8bc3065ad7d85f3cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93be5a78fff06503732de9b0aaf18677"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="packet_8h.html#a93be5a78fff06503732de9b0aaf18677">serialize_Packet</a> (<a class="el" href="structPacket.html">Packet</a> *data)</td></tr>
+<tr class="separator:a93be5a78fff06503732de9b0aaf18677"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaa9edef3e81e9efff7140ddeb9f9a44"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="packet_8h.html#afaa9edef3e81e9efff7140ddeb9f9a44">free_packet</a> (<a class="el" href="structPacket.html">Packet</a> *data)</td></tr>
+<tr class="separator:afaa9edef3e81e9efff7140ddeb9f9a44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Description of <a class="el" href="structPacket.html">Packet</a> structure. </p>
@@ -134,7 +146,7 @@ Functions</h2></td></tr>
 <p>Calculate CRC and attach to end of <a class="el" href="structPacket.html">Packet</a> structure.</p>
 <dl class="section return"><dt>Returns</dt><dd>8 byte CRC value. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="packet_8h_source.html#l00057">57</a> of file <a class="el" href="packet_8h_source.html">packet.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="packet_8c_source.html#l00003">3</a> of file <a class="el" href="packet_8c_source.html">packet.c</a>.</p>
 
 </div>
 </div>
@@ -156,7 +168,47 @@ Functions</h2></td></tr>
 <p>Verify CRC</p>
 <dl class="section return"><dt>Returns</dt><dd>-1 if CRC verification fails. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="packet_8h_source.html#l00067">67</a> of file <a class="el" href="packet_8h_source.html">packet.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="packet_8c_source.html#l00007">7</a> of file <a class="el" href="packet_8c_source.html">packet.c</a>.</p>
+
+</div>
+</div>
+<a id="afaa9edef3e81e9efff7140ddeb9f9a44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afaa9edef3e81e9efff7140ddeb9f9a44">&#9670;&nbsp;</a></span>free_packet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void free_packet </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structPacket.html">Packet</a> *&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Cleans and destroys packet. Call when a packet has been sent or received. </p>
+
+<p class="definition">Definition at line <a class="el" href="packet_8c_source.html#l00016">16</a> of file <a class="el" href="packet_8c_source.html">packet.c</a>.</p>
+
+</div>
+</div>
+<a id="a93be5a78fff06503732de9b0aaf18677"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93be5a78fff06503732de9b0aaf18677">&#9670;&nbsp;</a></span>serialize_Packet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void serialize_Packet </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structPacket.html">Packet</a> *&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Serializes a <a class="el" href="structPacket.html">Packet</a> for sending/receiving. </p>
 
 </div>
 </div>
