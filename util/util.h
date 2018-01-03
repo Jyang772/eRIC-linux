@@ -8,8 +8,10 @@
 #include <unistd.h>
 #include <string.h>
 
+/**
+ * Radio struct
+ */
 
-//Radio Struct
 typedef struct Radio{
 
 	int fd;
@@ -38,6 +40,12 @@ void setDestination(Radio*, char*);
  */
 
 int init_connection(Radio*);
+
+/**
+ * Sends a Packet to the Radio destination.
+ *
+ * @return Positive value if Packet sent successfully.
+ */
 int send(Radio*, Packet);
 void listen(Radio*);
 Radio* init_Radio(char* name);

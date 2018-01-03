@@ -29,8 +29,13 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * @section Data_structures Data structures
  *
+ * @subsection Radio
+ *
+ * @li @link util.h Radio @endlink: Radio struct description and functions.
+ *
  * @subsection Packet
  *
- * @li @link packet.h Packet @endlink: Packet structure description.
+ * @li @link packet.h Packet @endlink: Packet struct description and functions.
  *
+ * @section Utility_functions Utility functions
  */
