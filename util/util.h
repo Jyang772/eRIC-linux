@@ -1,5 +1,6 @@
 //#include "readLine.h"
 #include "packet.h"
+#include "safe_handle.h"
 
 #include <assert.h>
 #include <errno.h>

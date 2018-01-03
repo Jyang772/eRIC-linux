@@ -41,29 +41,6 @@ void read_data()
    close(fd);
 }
 
-int saferead(int fd, const void *p, size_t want){
-      int ret;
-      int ret_sum = 0;
-
-      errno = 0;
-      while (want){
-          ret = read(fd, (uint8_t*) p, want);
-          if(ret == 0)
-                return -1; /* EOF */
-          if(ret <= 0){
-               if(errno != EINTR && errno != EAGAIN ) {
-               return -1;
-          }
-          errno = 0;
-          continue;
-         }
-         want -= ret;
-         p = (uint8_t*) p + ret;
-         ret_sum += ret;
-     }
-     return ret_sum;
-   }
-
 int main() {
 
 
@@ -111,7 +88,7 @@ int main() {
 		//ioctl(fd, FIONREAD, &bytes);
 		
 		Packet data;
-		int rd = saferead(fd, &data, sizeof(Packet)); /* Check for errors */
+		int rd = safe_read(fd, &data, sizeof(Packet)); /* Check for errors */
 		
 		if(rd > 0)
 			printf("d: %s\n",data.type);
