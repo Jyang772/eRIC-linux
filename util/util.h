@@ -1,3 +1,6 @@
+#ifndef UTIL_H
+#define UTIL_H
+
 //#include "readLine.h"
 #include "packet.h"
 #include "safe_handle.h"
@@ -53,4 +56,4 @@ int setup_interface(Radio* r, int* fd,char* portname, int BAUD_RATE);
 int getTemp(Radio*, char*);
 
 
-
+#endif

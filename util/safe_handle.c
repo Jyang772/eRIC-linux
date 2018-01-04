@@ -43,3 +43,34 @@ int safe_read(int fd, const void *p, size_t want){
     }
     return ret_sum;
 }
+
+
+void write_data(Packet* data )
+{
+   int fd = 0;
+   /* open the file in append mode */
+   fd = open( "data.dat", O_RDWR|O_CREAT|O_APPEND,S_IWUSR |S_IRUSR);
+   
+   /* write the binary structure right to the file */
+   write(fd,data,sizeof(Packet));
+   close(fd);
+}
+
+
+void read_data()
+{
+   int fd = 0;
+   Packet data;
+
+   /* open the file */
+   fd = open( "data.dat", O_RDONLY );
+   while(read(fd, &data, sizeof(Packet))){}
+
+   printf("type: %s\n",data.type);
+   printf("src: %s\n",data.srcAddr);
+   printf("dest: %s\n",data.destAddr);
+   printf("payload: %s\n",data.payload);
+
+   /* close file */
+   close(fd);
+}

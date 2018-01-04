@@ -22,6 +22,10 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  * @brief Description of Packet structure
  *
  */
+
+#ifndef PACKET_H
+#define PACKET_H
+
 #include "crc.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -81,3 +85,4 @@ void serialize_Packet(Packet* data);
 
 void free_packet(Packet* data);
 
+#endif
