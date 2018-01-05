@@ -6,12 +6,15 @@ unsigned int CRC_calculate(Packet* data) {
 
 int CRC_verify(Packet data) {
 	
-	if(crc32a(data.CRC) != crc32a(data.payload))
+	if(data.CRC != crc32a(data.payload))
 		return -1;
 	else
 		return 1;
 }
 
+Packet* new_packet(char* type, char* srcAddr, char* destAddr, int seqNum, char* payload, char* CRC) {
+
+}
 
 void free_packet(Packet* data) {
 

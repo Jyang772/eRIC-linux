@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-Wall
 
-all: util.o interface.o packet.o crc.o safe_handle.o
+all: util.o interface.o packet.o crc.o safe_handle.o readLine.o
 
 util.o: util.c
 	$(CC) -c util.c
@@ -17,6 +17,9 @@ crc.o: crc.c
 
 safe_handle.o: safe_handle.c
 	$(CC) -c safe_handle.c
+
+readLine.o: readLine.c
+	$(CC) -c readLine.c
 
 clean:
 	rm -f *.o

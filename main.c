@@ -37,19 +37,26 @@ int main() {
 	int pret;
 	int bytes;
 
+	Packet data;
+	int goodReply = 1;
+	int rd = 0;
+	radA->init_connection(radA);
+	while(radA->getTemp(radA) < 0);
+	return 0;
+
 	while(1) {
-		radA->init_connection(radA);
-		pret = poll(fds, 1, timeout);
+		radA->getTemp(radA);
+		//radA->init_connection(radA);
+		pret = poll(fds, 2, timeout);
 		if(pret == 0) {
 			printf("ret %d\n",pret);
 			printf("\ttimeout\n");
 		}
 		else {
-			Packet data;
 			int rd = safe_read(fd, &data, sizeof(Packet)); /* Check for errors */
-			
-			if(rd > 0)
-				printf("d: %s\n",data.type);
+			if(rd > 0) {
+				printf("payload: %s\n",data.payload);
+			}
 		}	
 		sleep(1); /* Allow time for node to transmit reply */
 	}
@@ -57,36 +64,4 @@ int main() {
 	//radA->sendCmd("CMD");
 	//radA->getTemp();
 	//radA->close_connection();
-	//
-	//
-	
-	/*
-	if(strcmp(data.type,"0000") == 0)
-		printf("Type 1\n");
-
-	printf("Size of packet: %d\n",sizeof(data));
-
-	printf("%s\n",data.srcAddr);
-	free_packet(&data);
-	printf("%s\n",data.srcAddr);
-	*/
-
-
-	/*
-	Packet data;
-	strcpy(data.type,"0000");
-	strcpy(data.srcAddr,"A");
-	strcpy(data.destAddr,"B");
-	strcpy(data.payload,"lol");
-
-	write_data(&data);
-	read_data();
-	strcpy(data.type,"s");
-	write_data(&data);
-	read_data();
-	strcpy(data.type, "end");
-	write_data(&data);
-	read_data();
-*/	
-
 }

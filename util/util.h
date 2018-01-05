@@ -1,7 +1,7 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-//#include "readLine.h"
+#include "readLine.h"
 #include "packet.h"
 #include "safe_handle.h"
 
@@ -10,6 +10,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/ioctl.h>
+#include <poll.h>
 
 /**
  * Radio struct
@@ -24,7 +26,7 @@ typedef struct Radio{
 	//void sendMsg(char**);
 	//Operations
 	void (*setDestination)(struct Radio*, char*);
-	void (*getTemp)(struct Radio*, char*);
+	int (*getTemp)(struct Radio*);
 	void (*listen)(struct Radio*);
 	int (*init_connection)();
 
@@ -53,7 +55,8 @@ int send(Radio*, Packet);
 void listen(Radio*);
 Radio* init_Radio(char* name);
 int setup_interface(Radio* r, int* fd,char* portname, int BAUD_RATE);
-int getTemp(Radio*, char*);
+int getTemp(Radio*);
+int _getTemp(Radio*);
 
 
 #endif

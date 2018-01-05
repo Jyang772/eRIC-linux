@@ -3,7 +3,7 @@ CFLAGS=-Wall
 
 test: server.o
 	+$(MAKE) -C ../util
-	$(CC) server.o ../util/util.o ../util/interface.o ../util/packet.o ../util/crc.o -o server
+	$(CC) server.o ../util/util.o ../util/interface.o ../util/packet.o ../util/crc.o ../util/readLine.o ../util/safe_handle.o -o server
 
 server.o: server.c
 	$(CC) -c server.c

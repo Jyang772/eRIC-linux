@@ -13,26 +13,48 @@ void setDestination(Radio* r, char* s) {
 int init_connection(Radio* r) {
 	//Send connection request
 	//Construct Connection request packet
-
 	printf("init_connection\n");	
-	
+
+	struct pollfd fds[1];
+	int timeout = 2000;	
+        fds[0].fd = r->fd;
+        fds[0].events = 0;
+        fds[0].events |= POLLIN;
+
 	Packet data;
 	strncpy(data.type,"0000",5); //include null term
 	strncpy(data.srcAddr,r->ID, 6);
 	strncpy(data.destAddr,r->destAddr,6);
 
-	/*
-	Packet data = { 
-		.type = strdup("0000"),
-		.srcAddr = strdup(r->ID),
-		.destAddr = strdup(r->destAddr),
-	};
-	*/
-	
-	if(send(r, data) > 0)
-		return 1;
-	else
-		return -1;
+	if(send(r, data) > 0) {
+	        int rd = 0;
+		int bytes, pret;
+		while(1) {
+			pret = poll(fds, 1, timeout);
+			if(pret == 0) {
+				tcflush(r->fd, TCIOFLUSH);
+				printf("timeout\n");
+				return -1;
+			}
+			else {
+				ioctl(r->fd, FIONREAD, &bytes);
+				if(bytes < 180) {
+					continue;
+				}
+				else
+					break;
+			}
+		}
+
+                rd = safe_read(r->fd, &data, sizeof(Packet));
+                if(rd > 0) {
+                        /* get Packet payload and verify CRC */
+			if(strcmp(data.payload,"0010") == 0)
+				printf("ACK received\n");
+                }	
+
+
+	}
 }
 
 int send(Radio* r, Packet data) {
@@ -42,7 +64,7 @@ int send(Radio* r, Packet data) {
 	int fd;
 	fd = r->fd;
 
-	wlen = write(fd, &data, sizeof(Packet));
+	wlen = safe_write(fd, &data, sizeof(Packet));
 	if(wlen != sizeof(Packet)) {
 		printf("Error from write: %d, %d\n", wlen, errno);
 	}
@@ -52,22 +74,37 @@ void listen(Radio* r) {
 
 	while(1) {
 		int rdlen;
+		int bytes;
+
 		Packet data;
-		rdlen = read(r->fd, &data, sizeof(Packet));
-		tcdrain(r->fd);
+		ioctl(r->fd, FIONREAD, &bytes);
+		if(bytes != sizeof(Packet)) {
+			continue;
+		}
+			
+		printf("listen_bytes: %d\n",bytes);
 		
+		rdlen = safe_read(r->fd, &data, sizeof(Packet));
+			
 		if(rdlen > 0) {
+			printf("rdlen: %d\n",rdlen);
+			printf("%s\n",data.type);
 			if(strcmp(data.type,INVITE) == 0) {
 				printf("INVITE!\n");
 				Packet reply;
 				strcpy(reply.type,"0010");
-				write(r->fd, &reply, sizeof(Packet));
+				send(r,reply);
+				//write(r->fd, &reply, sizeof(Packet));
+			}
+
+			if(strcmp(data.type,TEMP) == 0) {
+				tcflush(r->fd, TCIOFLUSH);
+				printf("TEMP REQUESTED\n");
+				_getTemp(r);
 			}	
 		}
 
 	}
-	
-
 }
 
 int setup_interface(Radio* r, int* fd, char* portname, int BAUD_RATE) {
@@ -92,12 +129,98 @@ Radio* init_Radio(char* name) {
 	new_Radio->setDestination = setDestination;
 	new_Radio->init_connection = init_connection;
 	new_Radio->listen = listen;
+	new_Radio->getTemp = getTemp;
 
 
 	return new_Radio;
 }
 
-int getTemp(Radio* r, char* s) {
+int getTemp(Radio* r) {
+
+	Packet data;
+	strncpy(data.type,"0111",5);
+	strncpy(data.srcAddr,r->ID,6);
+	strncpy(data.destAddr,r->destAddr,6);
+
+	/*Todo: encapsulate in Radio */
+	struct pollfd fds[1];
+        int timeout = 2000;
+
+	fds[0].fd = r->fd;
+	fds[0].events = 0;
+	fds[0].events |= POLLIN;
+
+	/*todo: read_reply */
+	if(send(r,data) > 0) {
+		int rd = 0;
+		int bytes,pret;
+		while(1) {
+			pret = poll(fds, 1, timeout);	
+			if(pret == 0) {
+				tcflush(r->fd, TCIOFLUSH);
+				printf("timeout\n");
+				sleep(1);
+				return -1;	
+			}
+			else {
+				ioctl(r->fd, FIONREAD, &bytes);
+				if(bytes < sizeof(Packet)) {
+					continue;
+				}
+				else
+					break;
+			}
+		}
+		printf("bytes: %d\n",bytes);
+		rd = safe_read(r->fd, &data, sizeof(Packet));
+		printf("%d\n",rd);
+		if(rd > 0) {
+			/* get Packet payload and verify CRC */
+			if(CRC_verify(data) > 0) {
+				printf("Temp: %s\n",data.payload);
+				return 1;
+			}
+			else {
+				printf("Packet corrupt\n");
+				tcflush(r->fd, TCIOFLUSH);
+				return -1;
+			}
+		}
+		else
+			return -1;
+	}
+	else {
+		return -1;
+	}
+
+}
+
+int _getTemp(Radio* r) {
+
+	unsigned char buf[80];
+	int wlen = 0;
+	wlen = write(r->fd, "ER_CMD#T7", 9);
+
+	tcdrain(r->fd);
+	usleep(800000);
+	tcflush(r->fd, TCIOFLUSH);
+	wlen = write(r->fd, "ACK", 3);
+	usleep(50000);
+	readLine(r->fd, buf, 80);
+	buf[strlen(buf)] = '\n';
+	buf[strlen(buf)+1] = 0;
+	
+	printf("Temp: %s\n",buf);
+
+	
+	Packet temp;
+	strncpy(temp.type,"0111",5);
+	strncpy(temp.srcAddr,r->ID,6);
+	strncpy(temp.destAddr,r->destAddr,6);
+	temp.seqNum = 1;
+	strncpy(temp.payload,buf,strlen(buf)+1);
+	temp.CRC = CRC_calculate(&temp);
+	send(r,temp);
 
 }
 

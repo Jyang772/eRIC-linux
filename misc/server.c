@@ -7,7 +7,6 @@
 
 int main() {
 
-
 	char* name = "B";
 	char* portname = "/dev/ttyUSB0";
 	int fd = 0;
@@ -17,6 +16,7 @@ int main() {
 	//Initiate Radio in server mode
 	Radio* radB = init_Radio(name);
 	setup_interface(radB, &fd, portname, BAUD_RATE);
+	radB->setDestination(radB, "A");
 
 	radB->listen(radB);
 }

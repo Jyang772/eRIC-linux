@@ -31,9 +31,10 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <stdlib.h>
 
 #define INVITE "0000"
+#define TEMP "0111"
 
 /**
- * A Packet structure. New Packets can be created using the packet_new function.
+ * A Packet structure. New Packets can be created using the new_packet function.
  *
  * @see packet_new
  */
@@ -53,7 +54,7 @@ typedef struct Packet{
 	/** Payload */
 	char payload[160];
 	/** CRC */
-	char CRC[7];
+	unsigned int CRC;
 } Packet;
 
 /**
@@ -82,6 +83,8 @@ void serialize_Packet(Packet* data);
  * Cleans and destroys packet. Call when a packet has been sent or received.
  *
  */
+
+Packet* new_packet(char* type, char* srcAddr, char* destAddr, int seqNum, char* payload, char* CRC);
 
 void free_packet(Packet* data);
 
