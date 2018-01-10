@@ -38,11 +38,12 @@ int main() {
 	int bytes;
 
 	Packet data;
-	int goodReply = 1;
-	int rd = 0;
 
 	/* Handshake */
-	radA->init_connection(radA);
+	if(radA->init_connection(radA) < 0) {
+		printf("Error establishing connection to node: %s\n",radA->destAddr);
+		exit(1);
+	}
 	
 	/* Repeatedly request temperature from Node B */
 	while(1) {

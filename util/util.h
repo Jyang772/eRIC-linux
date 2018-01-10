@@ -33,6 +33,8 @@ typedef struct Radio{
 	//Send/Receive
 	int (*send)();
 	int (*receive)();
+	
+	struct pollfd fds[1];
 } Radio;
 
 
@@ -56,7 +58,9 @@ void listen(Radio*);
 Radio* init_Radio(char* name);
 int setup_interface(Radio* r, int* fd,char* portname, int BAUD_RATE);
 int getTemp(Radio*);
-int _getTemp(Radio*);
+int _getTemp(Radio*); //internal
+
+int read_reply(Radio*);
 
 
 #endif

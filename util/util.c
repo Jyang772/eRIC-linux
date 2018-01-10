@@ -15,11 +15,13 @@ int init_connection(Radio* r) {
 	//Construct Connection request packet
 	printf("init_connection\n");	
 
+/*
 	struct pollfd fds[1];
 	int timeout = 2000;	
         fds[0].fd = r->fd;
         fds[0].events = 0;
         fds[0].events |= POLLIN;
+*/
 
 	Packet data;
 	strncpy(data.type,"0000",5); //include null term
@@ -27,30 +29,16 @@ int init_connection(Radio* r) {
 	strncpy(data.destAddr,r->destAddr,6);
 
 	if(send(r, data) > 0) {
-	        int rd = 0;
-		int bytes, pret;
-		while(1) {
-			pret = poll(fds, 1, timeout);
-			if(pret == 0) {
-				tcflush(r->fd, TCIOFLUSH);
-				printf("timeout\n");
-				return -1;
-			}
-			else {
-				ioctl(r->fd, FIONREAD, &bytes);
-				if(bytes < 180) {
-					continue;
-				}
-				else
-					break;
-			}
-		}
+		int rd = 0;
+		read_reply(r);
 
                 rd = safe_read(r->fd, &data, sizeof(Packet));
                 if(rd > 0) {
-                        /* get Packet payload and verify CRC */
-			if(strcmp(data.payload,"0010") == 0)
+                        /* get Packet type */
+			if(strcmp(data.type,"0010") == 0) {
 				printf("ACK received\n");
+				return 1;
+			}
                 }	
 
 
@@ -142,36 +130,10 @@ int getTemp(Radio* r) {
 	strncpy(data.srcAddr,r->ID,6);
 	strncpy(data.destAddr,r->destAddr,6);
 
-	/*Todo: encapsulate in Radio */
-	struct pollfd fds[1];
-        int timeout = 2000;
-
-	fds[0].fd = r->fd;
-	fds[0].events = 0;
-	fds[0].events |= POLLIN;
-
-	/*todo: read_reply */
 	if(send(r,data) > 0) {
 		int rd = 0;
-		int bytes,pret;
-		while(1) {
-			pret = poll(fds, 1, timeout);	
-			if(pret == 0) {
-				tcflush(r->fd, TCIOFLUSH);
-				printf("timeout\n");
-				sleep(1);
-				return -1;	
-			}
-			else {
-				ioctl(r->fd, FIONREAD, &bytes);
-				if(bytes < sizeof(Packet)) {
-					continue;
-				}
-				else
-					break;
-			}
-		}
-		printf("bytes: %d\n",bytes);
+		read_reply(r);
+
 		rd = safe_read(r->fd, &data, sizeof(Packet));
 		printf("%d\n",rd);
 		if(rd > 0) {
@@ -185,14 +147,12 @@ int getTemp(Radio* r) {
 				tcflush(r->fd, TCIOFLUSH);
 				return -1;
 			}
-		}
-		else
+		} else {
 			return -1;
-	}
-	else {
+		}
+	} else {
 		return -1;
 	}
-
 }
 
 int _getTemp(Radio* r) {
@@ -223,4 +183,36 @@ int _getTemp(Radio* r) {
 	send(r,temp);
 
 }
+
+int read_reply(Radio* r) {
+
+	struct pollfd fds[1];
+	int timeout = 2000;
+
+	fds[0].fd = r->fd;
+	fds[0].events = 0;
+	fds[0].events |= POLLIN;
+
+	int rd = 0;
+	int bytes, pret;
+
+	while(1) {
+			pret = poll(fds, 1, timeout);
+			if(pret == 0) {
+				tcflush(r->fd, TCIOFLUSH);
+				printf("timeout\n");
+				sleep(1);
+				return -1;
+			}
+			else {
+				ioctl(r->fd, FIONREAD, &bytes);
+				if(bytes < sizeof(Packet)) {
+					continue;
+				}
+				else
+					break;
+			}
+		}
+}
+
 
