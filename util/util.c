@@ -145,10 +145,7 @@ int getTemp(Radio* r) {
 			else {
 				printf("Packet corrupt\n");
 				tcflush(r->fd, TCIOFLUSH);
-				return -1;
 			}
-		} else {
-			return -1;
 		}
 	} else {
 		return -1;
